@@ -1,0 +1,19 @@
+lib_dir = File.expand_path(File.join(File.dirname(__FILE__), '../../lib'))
+
+if File.exist?(File.join(lib_dir, 'daemons.rb'))
+  $LOAD_PATH.unshift lib_dir
+else
+  begin; require 'rubygems'; rescue ::Exception; end
+end
+
+require 'daemons'
+require 'dotenv/load'
+
+options = {
+  :log_output => true,
+  :backtrace => true,
+  :output_logfilename => "custom_output.txt",
+  :logfilename => "custom_log.log"
+}
+
+Daemons.run(File.join(File.dirname(__FILE__), 'main.rb'), options)

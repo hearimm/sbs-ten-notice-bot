@@ -1,0 +1,4 @@
+.env
+Gemfile.lock
+custom_log.log
+custom_output.txt
