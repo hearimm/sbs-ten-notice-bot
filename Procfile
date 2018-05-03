@@ -1,0 +1,1 @@
+worker:ruby daemon_runner.rb start
