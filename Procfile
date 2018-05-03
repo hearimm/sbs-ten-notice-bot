@@ -1,1 +1,1 @@
-worker:ruby daemon_runner.rb start
+myworker: ruby main.rb
