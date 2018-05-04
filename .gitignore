@@ -1,3 +1,4 @@
 .env
+.live.env
 custom_log.log
 custom_output.txt
