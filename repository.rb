@@ -13,7 +13,7 @@ module Repository
         def initialize # tried 1. initialize, 2. new, 3. self.initialize, 4. self.new
             puts "I'm being initialized!"
             
-            @client = Mongo::Client.new([ 'ds014658.mlab.com:14658' ], 
+            @client = Mongo::Client.new([ENV['MONGO_URL']], 
                 :database => ENV['MONGO_DB'], 
                 :user => ENV['MONGO_USER'], 
                 :password => ENV['MONGO_PW'])
