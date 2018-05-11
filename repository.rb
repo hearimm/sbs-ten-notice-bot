@@ -69,12 +69,58 @@ module Repository
       @collection.insert_one(doc)
     end
 
+    def insert_many(list)
+      @collection.insert_many(list)
+    end
+
     def find_one
       @collection.find.sort({time: 1}).limit(1).first
     end
 
     def delete_one(id)
       @collection.delete_one({_id: id})
+    end
+  end
+
+  # notice_latest Collection
+  class ViewLatest
+    include Singleton
+    def initialize
+      @client = Repository::MongoRepo.instance.client
+      @collection = @client[:view_latest]
+    end
+
+    def insert_one(doc)
+      @collection.insert_one(doc)
+    end
+
+    def find_one
+      @collection.find.first
+    end
+
+    def delete_all
+      @collection.delete_many
+    end
+  end
+
+  # notice_task Collection
+  class ViewTask
+    include Singleton
+    def initialize
+      @client = Repository::MongoRepo.instance.client
+      @collection = @client[:view_task]
+    end
+
+    def insert_many(list)
+      @collection.insert_many(list)
+    end
+
+    def find_one(weekday)
+      @collection.find({weekday: weekday}).first
+    end
+
+    def delete_all
+      @collection.delete_many
     end
   end
 end
