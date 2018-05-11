@@ -15,7 +15,7 @@ now_notice = Crawler.get_notice
 view_now_html = Crawler.get_view_radio
 # p latest.find_one['notice']
 
-if !latest.find_one.nil? && view_latest.find_one['html'] == view_now_html
+if !view_latest.find_one.nil? && view_latest.find_one['html'] == view_now_html
   puts 'view_radio_same'
 else
   doc = { html: view_now_html, date: Time.now }
@@ -27,7 +27,7 @@ else
 end
 
 if !latest.find_one.nil? && latest.find_one['notice'] == now_notice
-  puts 'same'
+  puts 'notice_same'
 else
   doc = { notice: now_notice, date: Time.now }
   p history.insert_one(doc)
@@ -37,5 +37,3 @@ else
   task.insert_many(hash_list)
   Sender.send_message(now_notice)
 end
-
-
