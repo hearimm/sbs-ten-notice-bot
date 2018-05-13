@@ -9,7 +9,7 @@
       "type": "Ruby",
       "request": "launch",
       "cwd": "${workspaceRoot}",
-      "program": "${workspaceRoot}/main_daily_task.rb",
+      "program": "${workspaceRoot}/main.rb",
       "env": {
         "LANG": "en_US.UTF-8",
         "LC_COLLATE": "en_US.UTF-8",

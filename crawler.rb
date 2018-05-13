@@ -11,7 +11,8 @@ module Crawler
 
       notice = iframe_doc.css("div[class=r_notice_w]")
       notice_img = notice.css("img")
-      p notice_img[0]["src"]
+      p notice_img[0]["src"] if !notice_img.empty? 
+      # p notice_img[0]["src"]
       # notice_utf8 = notice.to_html.to_s.encode('UTF-8', 'EUC-KR')
       # return notice.css("b").to_html.to_s.encode('UTF-8', 'EUC-KR')
       # return notice.css("img").to_html.to_s.encode('UTF-8', 'EUC-KR')
