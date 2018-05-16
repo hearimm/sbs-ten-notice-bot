@@ -34,6 +34,8 @@ else
   p latest.delete_all
   p latest.insert_one(doc)
   hash_list = DateFromStr.get_hash_list(now_notice)
+  task.delete_all
+  # hash_list delete today <
   task.insert_many(hash_list)
   Sender.send_message(now_notice)
 end

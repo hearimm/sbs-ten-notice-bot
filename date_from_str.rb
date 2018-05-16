@@ -24,7 +24,7 @@ module DateFromStr
         @date = getDateStr(s) if hasDate(s)
         @result.push({ time: get_time(@date, @time),
           desc: s.strip,
-          date: Time.now }) if hasTime(s) || hasDate(s)
+          date: Time.now }) if (hasTime(s) || hasDate(s)) && get_time(@date, @time) > Time.now
       }
 
       @result
