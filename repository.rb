@@ -80,6 +80,10 @@ module Repository
     def delete_one(id)
       @collection.delete_one({_id: id})
     end
+
+    def delete_all
+      @collection.delete_many
+    end
   end
 
   # notice_latest Collection
