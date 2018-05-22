@@ -15,7 +15,6 @@ begin
   view_task = Repository::ViewTask.instance
   now_notice = Crawler.get_notice
   view_now_html = Crawler.get_view_radio
-  # p latest.find_one['notice']
 
   if !view_latest.find_one.nil? && view_latest.find_one['html'] == view_now_html
     puts 'view_radio_same'

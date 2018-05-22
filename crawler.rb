@@ -8,7 +8,6 @@ module Crawler
       src = doc.css("frame")[1]["src"]
       iframe_doc = Nokogiri::HTML(open(src), nil, 'euc-kr')
 
-
       notice = iframe_doc.css("div[class=r_notice_w]")
       # notice_img = notice.css("img")
       # p notice_img[0]["src"] if !notice_img.empty?
@@ -21,14 +20,12 @@ module Crawler
     end
 
     def get_view_radio
-      # doc = Nokogiri::HTML(open("http://radio.sbs.co.kr/ten"))
-      # src = doc.css("frame")[1]["src"]
-      # iframe_doc = Nokogiri::HTML(open(src), nil, 'euc-kr')
-
-      iframe_doc = Nokogiri::HTML(File.read("sample.html"))
-      # p iframe_doc.css("dl[class=cn]")[1]
-      html = iframe_doc.css("div[class=wizLeft] li").to_html.gsub(/\n|\r|\t|   */, '')
-      File.write('./view.html', html) # .gsub(/\r\n|\t/, '').strip
+      doc = Nokogiri::HTML(open("http://radio.sbs.co.kr/ten"))
+      src = doc.css("frame")[1]["src"]
+      iframe_doc = Nokogiri::HTML(open(src), nil, 'EUC-KR')
+      li = iframe_doc.css("div[class=wizLeft] li").to_html.encode('UTF-8').gsub(/\n|\r|\t|   */, '')
+      html = li
+      # File.write('./view.html', html) # .gsub(/\r\n|\t/, '').strip
       return html
     end
 
