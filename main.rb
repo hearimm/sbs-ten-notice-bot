@@ -24,6 +24,7 @@ begin
     view_latest.insert_one(doc)
 
     hash_list = Crawler.get_view_radio_hash(view_now_html)
+    view_task.delete_all
     view_task.insert_many(hash_list)
   end
 
