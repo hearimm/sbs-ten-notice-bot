@@ -30,6 +30,8 @@ begin
 
   if !latest.find_one.nil? && latest.find_one['notice'] == now_notice
     puts 'notice_same'
+  elsif now_notice.empty?
+    puts 'notice_is_empty'
   else
     doc = { notice: now_notice, date: Time.now }
     p history.insert_one(doc)
@@ -45,6 +47,6 @@ begin
 rescue StandardError => e
   puts e.message
   puts e.backtrace.inspect
-  Sender.send_err_message("#{e.message}\n#{e.backtrace.inspect}")
+  Sender.send_err_message("#{emessage}\n#{e.backtrace.inspect}")
 
 end
