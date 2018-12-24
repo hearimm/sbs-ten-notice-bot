@@ -4,53 +4,59 @@ require 'nokogiri'
 module Crawler
   class << self
     def get_notice
-      doc = Nokogiri::HTML(open("http://radio.sbs.co.kr/ten"))
-      src = doc.css("frame")[1]["src"]
-      iframe_doc = Nokogiri::HTML(open(src), nil, 'euc-kr')
 
-      notice = iframe_doc.css("div[class=r_notice_w]")
-      # notice_img = notice.css("img")
-      # p notice_img[0]["src"] if !notice_img.empty?
+      docJson = JSON.parse(open("https://static.apis.sbs.co.kr/program-api/2.0/main/ten").read)
+      # desc = docJson["layers"][5]["description"]
+      desc = nil
+      for doc in docJson["layers"]
+          if doc["layer"] == "notice"
+              desc = doc["description"]
+          end
+      end
 
-      # p notice_img[0]["src"]
-      # notice_utf8 = notice.to_html.to_s.encode('UTF-8', 'EUC-KR')
-      # return notice.css("b").to_html.to_s.encode('UTF-8', 'EUC-KR')
-      # return notice.css("img").to_html.to_s.encode('UTF-8', 'EUC-KR')
-      return notice.css("b").text
+      if (desc.nil?)
+        return ""
+      end
+
+      html_doc = Nokogiri::HTML(desc)
+      blackList = ["↳[이벤트신청바로가기]", "[베텐인스타그램바로가기]", "└@sbs_ten"]
+
+      return html_doc.search('b')
+              .map{|x| x.text.gsub(/\s+/, "") }
+              .uniq
+              .delete_if{|x| x == "" || !blackList.index(x).nil? }
+              .join("\n")
     end
 
     def get_view_radio
-      doc = Nokogiri::HTML(open("http://radio.sbs.co.kr/ten"))
-      src = doc.css("frame")[1]["src"]
-      iframe_doc = Nokogiri::HTML(open(src), nil, 'EUC-KR')
-      li = iframe_doc.css("div[class=wizLeft] li").to_html.encode('UTF-8').gsub(/\n|\r|\t|   */, '')
-      html = li
-      # File.write('./view.html', html) # .gsub(/\r\n|\t/, '').strip
-      return html
+      docJson = JSON.parse(open("https://static.apis.sbs.co.kr/program-api/2.0/main/ten").read)
+
+      weeks = nil
+      for doc in docJson["layers"]
+          if doc["layer"] == "weekly"
+              weeks = doc["weeks"]
+          end
+      end
+      return weeks
     end
 
-    def get_view_radio_hash(html)
+    def get_view_radio_hash(weeks)
       result = []
-      view_radio_doc = Nokogiri::HTML(html)
 
-      h = { "일요일"=> 0 , '월요일' => 1, "화요일" => 2,
-        "수요일" => 3,  "목요일" => 4, "금요일" => 5,
-        "토요일" => 6 }
+      weeks.each { |week|
+          desc = week["items"][0]["title"] + ' ' + week["guest"]
+          weekday_kor = week["title"]
+          weekday = week["day"]
+          view_yn = week["isviewradio"] ? 'Y' : 'N'
 
-      view_radio_doc.css('li').each { |doc|
-        desc = doc.css('dt a').text + ' ' + doc.css('dd[class=guest] a').text
-        weekday_kor = doc.css('span[class=wk] img')[0]['alt']
-        weekday = h[weekday_kor]
-        view_yn = doc.css('img[alt=보라]').empty? ? 'N' : 'Y'
+          hash = { weekday: weekday,
+                      weekday_kor: weekday_kor,
+                      desc: desc,
+                      view_yn: view_yn }
 
-        hash = { weekday: weekday,
-                 weekday_kor: weekday_kor,
-                 desc: desc,
-                 view_yn: view_yn }
-
-        result.push(hash)
+          result.push(hash)
       }
-      result
+      return result
     end
   end
 end
