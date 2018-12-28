@@ -37,16 +37,16 @@ begin
     p history.insert_one(doc)
     p latest.delete_all
     p latest.insert_one(doc)
+    Sender.send_message(now_notice)
     hash_list = DateFromStr.get_hash_list(now_notice)
     task.delete_all
     # hash_list delete today <
     task.insert_many(hash_list)
-    Sender.send_message(now_notice)
   end
 
 rescue StandardError => e
   puts e.message
   puts e.backtrace.inspect
-  Sender.send_err_message("#{emessage}\n#{e.backtrace.inspect}")
+  Sender.send_err_message("#{e.message}\n#{e.backtrace.inspect}")
 
 end
