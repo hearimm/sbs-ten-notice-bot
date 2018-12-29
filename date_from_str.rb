@@ -5,8 +5,12 @@ module DateFromStr
   class << self
     @time = nil
     @date = nil
+    @timeChange = false
 
     def get_time(date, time)
+      if (date.nil? or time.nil?)
+        return nil
+      end
       y = Time.now.year
       m = date.split('/')[0].to_i
       d = date.split('/')[1].to_i
@@ -23,9 +27,37 @@ module DateFromStr
         @time = getTimeStr(s) if hasTime(s)
         @date = getDateStr(s) if hasDate(s)
         @result.push({ time: get_time(@date, @time),
-          desc: s.strip,
-          date: Time.now }) if (hasTime(s) && hasDate(s)) && get_time(@date, @time) > Time.now
+                       desc: s.strip,
+                       date: Time.now }) if (hasTime(s) && hasDate(s)) && get_time(@date, @time) > Time.now
       }
+
+      @result
+    end
+
+
+    def get_hash_list_from_plane(str)
+      @result = []
+      arr = str.split(/((?:[1-2][0-9]|[0-9]|)\/(?:[0-3][0-9]|[0-9]))|((?:0[0-9]|1[0-9]|2[0-3])+:[0-5][0-9])/)
+      arr.each do |s|
+
+        if hasTime(s)
+          @time = getTimeStr(s)
+          @timeChange = true
+          next
+        end
+
+        if hasDate(s)
+          @date = getDateStr(s)
+          next
+        end
+        desc = s.strip.gsub("　","")
+        if (!get_time(@date, @time).nil? && get_time(@date, @time) > Time.now && desc.length > 0 && @timeChange)
+          @result.push({ time: get_time(@date, @time),
+                         desc: desc,
+                         date: Time.now })
+          @timeChange = false
+        end
+      end
 
       @result
     end

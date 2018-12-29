@@ -28,6 +28,27 @@ module Crawler
               .join("\n")
     end
 
+    def get_notice_plane
+
+      docJson = JSON.parse(open("https://static.apis.sbs.co.kr/program-api/2.0/main/ten").read)
+      # desc = docJson["layers"][5]["description"]
+      desc = nil
+      for doc in docJson["layers"]
+        if doc["layer"] == "notice"
+          desc = doc["description"]
+        end
+      end
+
+      if (desc.nil?)
+        return ""
+      end
+
+      html_doc = Nokogiri::HTML(desc)
+      blackList = ["↳[이벤트신청바로가기]", "[베텐인스타그램바로가기]", "└@sbs_ten"]
+
+      return html_doc.text
+    end
+
     def get_view_radio
       docJson = JSON.parse(open("https://static.apis.sbs.co.kr/program-api/2.0/main/ten").read)
 

@@ -13,7 +13,7 @@ begin
   task = Repository::Task.instance
   view_latest = Repository::ViewLatest.instance
   view_task = Repository::ViewTask.instance
-  now_notice = Crawler.get_notice
+  now_notice = Crawler.get_notice_plane
   view_now_html = Crawler.get_view_radio
 
   if !view_latest.find_one.nil? && view_latest.find_one['html'] == view_now_html
@@ -37,11 +37,11 @@ begin
     p history.insert_one(doc)
     p latest.delete_all
     p latest.insert_one(doc)
-    Sender.send_message(now_notice)
-    hash_list = DateFromStr.get_hash_list(now_notice)
+    hash_list = DateFromStr.get_hash_list_from_plane(now_notice)
     task.delete_all
-    # hash_list delete today <
     task.insert_many(hash_list)
+    hash_list_to_text = hash_list_plane.map{|x| x[:time].strftime "%m-%d (%a) %H:%M" + " " + x[:desc]}.join("\n")
+    Sender.send_message(hash_list_to_text)
   end
 
 rescue StandardError => e

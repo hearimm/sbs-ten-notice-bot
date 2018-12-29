@@ -24,6 +24,8 @@ GEM
     multipart-post (2.0.0)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
+    nokogiri (1.8.2-x64-mingw32)
+      mini_portile2 (~> 2.3.0)
     telegram-bot-ruby (0.8.6.1)
       faraday
       inflecto
@@ -37,6 +39,7 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   daemons!
@@ -46,8 +49,5 @@ DEPENDENCIES
   nokogiri!
   telegram-bot-ruby (~> 0.8.6.1)!
 
-RUBY VERSION
-   ruby 2.4.2p198
-
 BUNDLED WITH
-   1.16.1
+   1.17.3
