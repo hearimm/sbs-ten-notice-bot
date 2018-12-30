@@ -40,13 +40,12 @@ begin
     hash_list = DateFromStr.get_hash_list_from_plane(now_notice)
     task.delete_all
     task.insert_many(hash_list)
-    hash_list_to_text = hash_list_plane.map{|x| x[:time].strftime "%m-%d (%a) %H:%M" + " " + x[:desc]}.join("\n")
-    Sender.send_message(hash_list_to_text)
+    Sender.send_err_message(hash_list.map{|x| x[:time].strftime "%m/%d(%a)%H:%M" + " " + x[:desc]}.join("\n"))
+    Sender.send_message(now_notice.gsub(/(((?:[1-2][0-9]|[0-9])(?:\/)(?:[0-3][0-9]|[0-9]))|((?:0[0-9]|1[0-9]|2[0-3])+:[0-5][0-9]))/,"\n"+'\1'))
   end
 
 rescue StandardError => e
   puts e.message
   puts e.backtrace.inspect
   Sender.send_err_message("#{e.message}\n#{e.backtrace.inspect}")
-
 end

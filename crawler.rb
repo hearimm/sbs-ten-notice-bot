@@ -44,9 +44,8 @@ module Crawler
       end
 
       html_doc = Nokogiri::HTML(desc)
-      blackList = ["↳[이벤트신청바로가기]", "[베텐인스타그램바로가기]", "└@sbs_ten"]
 
-      return html_doc.text
+      return html_doc.text.gsub("↳[이벤트 신청 바로가기]","").gsub("[베텐 인스타그램 바로가기]","").gsub("└ @sbs_ten<카카오TV 생녹방일정>　　　　","")
     end
 
     def get_view_radio

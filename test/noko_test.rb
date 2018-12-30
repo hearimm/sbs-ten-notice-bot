@@ -26,9 +26,9 @@ blackList = ["↳[이벤트신청바로가기]", "[베텐인스타그램바로�
 #     .delete_if{|x| x == "" || !blackList.index(x).nil? }
 #     .join("\n")
 
-p html_doc.search('br')
-p html_doc.text
-p html_doc.text.split(/((?:[1-2][0-9]|[0-9]|)\/(?:[0-3][0-9]|[0-9]))/)
+p html_doc.text.gsub("↳[이벤트 신청 바로가기]","").gsub("[베텐 인스타그램 바로가기]","").gsub("└ @sbs_ten<카카오TV 생녹방일정>　　　　","")
+# p html_doc.search('br')
+# p html_doc.text.split(/((?:[1-2][0-9]|[0-9]|)\/(?:[0-3][0-9]|[0-9]))/)
 # .map{|x| x.text.gsub(/\s+/, "").gsub("　","") }
 # .delete_if{|x| x == "" || !blackList.index(x).nil? }
 # .join("\n")
@@ -38,5 +38,5 @@ p html_doc.text.split(/((?:[1-2][0-9]|[0-9]|)\/(?:[0-3][0-9]|[0-9]))/)
 # .delete_if{|x| x == "" || !blackList.index(x).nil? }
 # .join("\n")
 #
-arr = html_doc.text.split(/((?:[1-2][0-9]|[0-9]|)\/(?:[0-3][0-9]|[0-9]))|((?:0[0-9]|1[0-9]|2[0-3])+:[0-5][0-9])/)
-p arr.join("\n")
+# arr = html_doc.text.split(/((?:[1-2][0-9]|[0-9]|)\/(?:[0-3][0-9]|[0-9]))|((?:0[0-9]|1[0-9]|2[0-3])+:[0-5][0-9])/)
+# p arr.join("\n")
